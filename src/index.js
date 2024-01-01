@@ -1,1 +1,3 @@
-console.log("index.js loaded");
+import startApp from "./scripts/functions/app.js";
+
+startApp();

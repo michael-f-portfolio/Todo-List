@@ -7,9 +7,10 @@ module.exports = {
     },
     resolve :{
         alias: {
-            Components: path.resolve(__dirname, "src/scripts/components/"),
-            Functions: path.resolve(__dirname, "src/scripts/functions/"),
-            Styles: path.resolve(__dirname, "src/styles"),
+            classes: path.resolve(__dirname, "src/scripts/classes/"),
+            components: path.resolve(__dirname, "src/scripts/components/"),
+            functions: path.resolve(__dirname, "src/scripts/functions/"),
+            styles: path.resolve(__dirname, "src/styles"),
         },
     },
     plugins: [
