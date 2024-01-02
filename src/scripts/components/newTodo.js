@@ -1,10 +1,16 @@
+import "styles/newTodo.css";
+
 export default class NewTodo {
     constructor() {
         this.app = document.querySelector("#main-content-container");
 
         this.newTodoDialog = document.createElement("dialog");
         this.newTodoDialog.id = "new-todo-dialog";
-        this.newTodoDialog.addEventListener("click", () => this.newTodoDialog.close());
+        this.newTodoDialog.addEventListener("click", () => {
+            this.#clearInput();
+            this.newTodoDialog.close()
+
+        });
 
         this.newTodoDialogContainer = document.createElement("div");
         this.newTodoDialogContainer.id = "new-todo-dialog-container";
@@ -17,32 +23,90 @@ export default class NewTodo {
         this.form.appendChild(this.formTitle);
 
         this.validationMessageContainer = document.createElement("div");
+        this.validationMessageContainer.classList.add("validationContainer");
         this.validationMessageContainer.id = "newTodo-validation-message-container";
         this.form.appendChild(this.validationMessageContainer);
 
         //title input
+        const titleInputId = "newTodo-title-input";
+        this.titleInputContainer = document.createElement("div");
+        this.titleInputContainer.classList.add("titleInput");
+
+        this.titleInputLabel = document.createElement("label");
+        this.titleInputLabel.setAttribute("for", titleInputId);
+        this.titleInputLabel.textContent = "Title";
+
         this.titleInput = document.createElement("input");
         this.titleInput.type = "text";
-        this.titleInput.id = "newTodo-title-input";
-        this.titleInput.placeholder = "Todo Title";
-        this.form.appendChild(this.titleInput);
+        this.titleInput.id = titleInputId;
 
-        //description input
-        this.descriptionInput = document.createElement("input");
-        this.descriptionInput.type = "text";
-        this.descriptionInput.id = "newTodo-description-input";
-        this.descriptionInput.placeholder = "Todo Description";
-        this.form.appendChild(this.descriptionInput);
+        this.titleInputContainer.append(this.titleInputLabel,
+                                        this.titleInput);
+        this.form.appendChild(this.titleInputContainer);
 
         //dueDate input
+        const dueDateId = "newTodo-dueDate-input";
+        this.dueDateInputContainer = document.createElement("div");
+        this.dueDateInputContainer.classList.add("dueDateInput");
+
+        this.dueDateLabel = document.createElement("label");
+        this.dueDateLabel.setAttribute("for", dueDateId);
+        this.dueDateLabel.textContent = "Due Date";
+
         this.dueDateInput = document.createElement("input");
         this.dueDateInput.type = "date";
-        this.dueDateInput.id = "newTodo-due-date-input";
-        // this.dueDateInput.value = new Date();
-        this.form.appendChild(this.dueDateInput);
+        this.dueDateInput.id = dueDateId;
 
-        //show checklist items checkbox and label
-        this.showChecklistCheckboxContainer = document.createElement("div");
+        this.dueDateInputContainer.append(this.dueDateLabel, this.dueDateInput);
+        this.form.appendChild(this.dueDateInputContainer);
+
+        // priority selection
+        const priorityOptionsArray = ["Low", "Normal", "High", "Urgent", "Critical"];
+        const prioritySelectId = "newTodo-priority-select";
+        this.prioritySelectContainer = document.createElement("div");
+        this.prioritySelectContainer.classList.add("prioritySelect")
+
+        this.prioritySelectLabel = document.createElement("label");
+        this.prioritySelectLabel.setAttribute("for", prioritySelectId);
+        this.prioritySelectLabel.textContent = "Priority";
+
+        this.prioritySelect = document.createElement("select");
+        this.prioritySelect.id = prioritySelectId;
+        priorityOptionsArray.forEach(element => {
+            const option = document.createElement("option");
+            option.value = element;
+            option.textContent = element;
+            this.prioritySelect.appendChild(option);
+        });
+
+        this.prioritySelectContainer.append(this.prioritySelectLabel, this.prioritySelect);
+        this.form.appendChild(this.prioritySelectContainer);
+
+        //description input
+        const descriptionInputId = "newTodo-description-input";
+        this.descriptionInputContainer = document.createElement("div");
+        this.descriptionInputContainer.classList.add("descriptionInput");
+
+        this.descriptionInputLabel = document.createElement("label");
+        this.descriptionInputLabel.setAttribute("for", descriptionInputId);
+        this.descriptionInputLabel.textContent = "Description";
+
+        this.descriptionInput = document.createElement("textarea");
+        this.descriptionInput.id = descriptionInputId;
+        this.descriptionInput.setAttribute("rows", 5);
+        this.descriptionInput.setAttribute("cols", 20);
+
+        this.descriptionInputContainer.append(this.descriptionInputLabel,
+                                              this.descriptionInput);
+        this.form.appendChild(this.descriptionInputContainer);
+
+        //show checklist items checkbox, label and add checklist item button
+        this.checklistActionsContainer = document.createElement("div");
+        this.checklistActionsContainer.classList.add("checklistActions");
+
+        this.showChecklistContainer = document.createElement("div");
+        this.showChecklistContainer.classList.add("showChecklist");
+
         this.showChecklistCheckbox = document.createElement("input");
         this.showChecklistCheckbox.type = "checkbox";
         this.showChecklistCheckbox.id = "newTodo-show-checklist-items-input";
@@ -50,49 +114,37 @@ export default class NewTodo {
             event.target.checked ? this.toggleChecklistItemsInputVisibility(true)
                                  : this.toggleChecklistItemsInputVisibility(false);
         });
+
         this.showChecklistCheckboxLabel = document.createElement("label");
         this.showChecklistCheckboxLabel.setAttribute("for", "newTodo-show-checklist-items-input");
         this.showChecklistCheckboxLabel.textContent = "Add Checklist?";
 
-        this.showChecklistCheckboxContainer.append(this.showChecklistCheckbox, this.showChecklistCheckboxLabel);
-        this.form.appendChild(this.showChecklistCheckboxContainer);
-
-        this.numberOfChecklistItems = 0;
-
-        //checklist items container, add item button and empty ul to contain checklist items
-        this.checklistItemsInputContainer = document.createElement("div");
-        this.checklistItemsInputContainer.id = "newTodo-checklist-items-input-container";
-        this.checklistItemsInputContainer.style.visibility = "hidden";
-
         this.addChecklistItemButton = document.createElement("button");
         this.addChecklistItemButton.id = "newTodo-add-checklist-item";
-        this.addChecklistItemButton.textContent = "Add Item";
+        this.addChecklistItemButton.textContent = "+";
+        this.addChecklistItemButton.style.visibility = "hidden";
         this.addChecklistItemButton.addEventListener("click", (event) => {
             event.preventDefault();
             this.addChecklistItem();
         });
 
+        this.showChecklistContainer.append(this.showChecklistCheckbox, this.showChecklistCheckboxLabel);
+        this.checklistActionsContainer.append(this.showChecklistContainer, this.addChecklistItemButton);
+        this.form.appendChild(this.checklistActionsContainer);
+
+        //checklist items container and empty ul to contain checklist items
+        this.checklistItemsInputContainer = document.createElement("div");
+        this.checklistItemsInputContainer.classList.add("checklistItems");
+        this.checklistItemsInputContainer.style.visibility = "hidden";
+
         this.checklistItemsUnorderedList = document.createElement("ul");
 
-        this.checklistItemsInputContainer.append(this.addChecklistItemButton,
-                                                 this.checklistItemsUnorderedList);
+        this.checklistItemsInputContainer.append(this.checklistItemsUnorderedList);
         this.form.appendChild(this.checklistItemsInputContainer);
-
-        // priority selection
-        this.priorityOptionsArray = ["Low", "Normal", "High", "Urgent", "Critical"];
-        this.prioritySelect = document.createElement("select");
-        this.prioritySelect.id = "newTodo-priority-select";
-        this.priorityOptionsArray.forEach(element => {
-            const option = document.createElement("option");
-            option.value = element;
-            option.textContent = element;
-            this.prioritySelect.appendChild(option);
-        });
-        this.form.appendChild(this.prioritySelect);
 
         //// Form actions
         this.formActionContainer = document.createElement("div");
-        this.formActionContainer.id = "form-action-container";
+        this.formActionContainer.classList.add("formActions");
         // create new todo button
         this.createTodoButton = document.createElement("button");
         this.createTodoButton.id = "create-todo";
@@ -192,6 +244,7 @@ export default class NewTodo {
     }
 
     #clearInput() {
+        this.validationMessageContainer.textContent = "";
         this.titleInput.value = "";
         this.descriptionInput.value = "";
         this.dueDateInput.value = "";
@@ -227,24 +280,16 @@ export default class NewTodo {
     }
 
     addChecklistItem() {
-        // const checklistItemsUnorderedList = document.querySelector("#newTodo-checklist-items-input-container ul");
-        // this.numberOfChecklistItems++;
-
         const checklistItem = document.createElement("li");
-        // checklistItem.id = `checklist-item:${numberOfChecklistItems + 1}`;
-        // checklistItem.id = `checklist-item:${this.numberOfChecklistItems}`;
 
         const checklistItemTextInput = document.createElement("input");
         checklistItemTextInput.type = "text";
-        // checklistItemTextInput.id = `checklist-item-textInput:${numberOfChecklistItems + 1}`;
-        // checklistItemTextInput.id = `checklist-item-textInput:${this.numberOfChecklistItems}`;
         checklistItemTextInput.classList.add("checklistItem");
         checklistItem.appendChild(checklistItemTextInput);
 
         const checklistItemRemoveButton = document.createElement("button");
-        // checklistItemRemoveButton.id = `checklist-remove-button:${numberOfChecklistItems + 1}`;
-        // checklistItemRemoveButton.id = `checklist-remove-button:${this.numberOfChecklistItems}`;
-        checklistItemRemoveButton.textContent = "Remove";
+        checklistItemRemoveButton.classList.add("removeButton");
+        checklistItemRemoveButton.textContent = "-";
         checklistItemRemoveButton.addEventListener("click", (event) => {
             event.preventDefault();
             this.removeChecklistItem(checklistItem);
@@ -260,9 +305,13 @@ export default class NewTodo {
     toggleChecklistItemsInputVisibility(toggle) {
         if (toggle) {
             this.checklistItemsInputContainer.removeAttribute("style");
+            this.addChecklistItemButton.removeAttribute("style");
         } else {
             this.checklistItemsInputContainer.style.visibility = "hidden";
             this.checklistItemsInputContainer.style.maxHeight = "0";
+            this.addChecklistItemButton.style.visibility = "hidden";
+            // this.addChecklistItemButton.style.maxHeight = "0";
+
         }
     }
 }
