@@ -1,3 +1,5 @@
+import "styles/header.css";
+
 export default class Header {
     constructor() {
         this.app = document.querySelector("#main-content-container");
