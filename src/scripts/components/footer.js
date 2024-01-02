@@ -1,3 +1,5 @@
+import "styles/footer.css";
+
 export default class Footer {
     constructor() {
         this.app = document.querySelector("#main-content-container");
