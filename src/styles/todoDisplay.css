@@ -1,0 +1,12 @@
+#todo-display-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 80%;
+}
+
+.todoContainer {
+    display: flex;
+    flex-direction: column;
+
+}

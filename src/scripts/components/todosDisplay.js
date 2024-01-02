@@ -1,3 +1,6 @@
+import "styles/todoDisplay.css";
+import { format } from "date-fns";
+
 export default class TodosDisplay {
     constructor() {
         this.app = document.querySelector("#main-content-container");
@@ -37,7 +40,16 @@ export default class TodosDisplay {
 
         const todoDueDate = document.createElement("div");
         todoDueDate.classList.add("todoDueDate");
-        todoDueDate.textContent = todo.dueDate;
+
+        // format date
+        // trim off the timezone so date-fns.format() treats it as locale
+        // since input date comes in as UTC but create Date with that value makes it locale
+        // "Tue, 02 Jan 2024 00:00:00 GMT" to
+        // "Tue, 02 Jan 2024 00:00:00"
+        const dateToFormat = todo.dueDate.toUTCString().substr(0, todo.dueDate.toUTCString().length - 4);
+        const formattedDate = format(dateToFormat, "MMMM do, yyyy");
+
+        todoDueDate.textContent = formattedDate;
         todoContainer.appendChild(todoDueDate);
 
         const todoPriority = document.createElement("div");
@@ -84,6 +96,7 @@ export default class TodosDisplay {
         todoContainer.appendChild(editTodoButton);
 
         const deleteTodoButton = document.createElement("button");
+        deleteTodoButton.classList.add("removeButton");
         deleteTodoButton.textContent = "Delete";
         deleteTodoButton.addEventListener("click", () => this.onTodoDeleteButtonClick(todoContainer.id));
         todoContainer.appendChild(deleteTodoButton);
