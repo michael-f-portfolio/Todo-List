@@ -40,6 +40,11 @@ export default class TodosDisplay {
         const todoInfoContainer = document.createElement("div");
         todoInfoContainer.classList.add("todoInfo");
 
+        const todoPriority = document.createElement("div");
+        todoPriority.classList.add("todoPriority");
+        todoPriority.textContent = todo.priority;
+        todoInfoContainer.appendChild(todoPriority);
+
         const todoDueDate = document.createElement("div");
         todoDueDate.classList.add("todoDueDate");
         // format date
@@ -51,12 +56,6 @@ export default class TodosDisplay {
         const formattedDate = format(dateToFormat, "MMMM do, yyyy");
         todoDueDate.textContent = formattedDate;
         todoInfoContainer.appendChild(todoDueDate);
-
-        const todoPriority = document.createElement("div");
-        todoPriority.classList.add("todoPriority");
-        todoPriority.textContent = todo.priority;
-
-        todoInfoContainer.appendChild(todoPriority);
 
         todoPriorityContainer.appendChild(todoInfoContainer);
 
