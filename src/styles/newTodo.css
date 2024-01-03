@@ -47,8 +47,38 @@ form > div {
     color: var(--red-600);
 }
 
-.dueDateInput > input{
+form input[type="text"],
+.descriptionInput > textarea,
+.dueDateInput > input,
+.prioritySelect > select {
+    border: none;
+    border-radius: 4px;
+    background-color: var(--slate-200);
+}
+
+form input[type="text"] {
+    text-indent: 4px;
+    height: 25px;
+}
+
+form input:focus-visible,
+.descriptionInput > textarea:focus-visible,
+.dueDateInput > input:focus-visible {
+    border: none;
+    outline: none;
+    background-color: var(--slate-100);
+}
+
+.dueDateInput > input {
     width: max-content;
+}
+
+.prioritySelect > select {
+    /* background-color: var(--slate); */
+}
+
+.prioritySelect > select > option[value="Low"] {
+   /* background-color: red; */
 }
 
 .descriptionInput > label {
@@ -57,10 +87,6 @@ form > div {
 
 .descriptionInput > textarea {
     resize: none;
-}
-
-.formActions {
-    justify-content: space-between;
 }
 
 .checklistActions {
@@ -86,5 +112,9 @@ form > div {
 .checklistItems li {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+
+.formActions {
 
 }
