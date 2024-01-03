@@ -23,6 +23,10 @@ export default class TodosDisplay {
 
     displayTodo = (todo) => {
         const todoContainer = document.createElement("div");
+
+        const todoPriorityContainer = document.createElement("div");
+        todoPriorityContainer.classList.add(`priority${todo.priority}`);
+
         todoContainer.id = todo.id;
         todoContainer.classList.add("todoContainer", todo.completed
                                                      ? "complete"
@@ -31,16 +35,13 @@ export default class TodosDisplay {
         const todoTitle = document.createElement("div");
         todoTitle.classList.add("todoTitle");
         todoTitle.textContent = todo.title;
-        todoContainer.appendChild(todoTitle);
+        todoPriorityContainer.appendChild(todoTitle);
 
-        const todoDescription = document.createElement("div");
-        todoDescription.classList.add("todoDescription");
-        todoDescription.textContent = todo.description;
-        todoContainer.appendChild(todoDescription);
+        const todoInfoContainer = document.createElement("div");
+        todoInfoContainer.classList.add("todoInfo");
 
         const todoDueDate = document.createElement("div");
         todoDueDate.classList.add("todoDueDate");
-
         // format date
         // trim off the timezone so date-fns.format() treats it as locale
         // since input date comes in as UTC but create Date with that value makes it locale
@@ -48,14 +49,21 @@ export default class TodosDisplay {
         // "Tue, 02 Jan 2024 00:00:00"
         const dateToFormat = todo.dueDate.toUTCString().substr(0, todo.dueDate.toUTCString().length - 4);
         const formattedDate = format(dateToFormat, "MMMM do, yyyy");
-
         todoDueDate.textContent = formattedDate;
-        todoContainer.appendChild(todoDueDate);
+        todoInfoContainer.appendChild(todoDueDate);
 
         const todoPriority = document.createElement("div");
         todoPriority.classList.add("todoPriority");
         todoPriority.textContent = todo.priority;
-        todoContainer.appendChild(todoPriority);
+
+        todoInfoContainer.appendChild(todoPriority);
+
+        todoPriorityContainer.appendChild(todoInfoContainer);
+
+        const todoDescription = document.createElement("div");
+        todoDescription.classList.add("todoDescription");
+        todoDescription.textContent = todo.description;
+        todoPriorityContainer.appendChild(todoDescription);
 
         if (todo.checklist.checklistItems.length > 0) {
             const todoChecklist = document.createElement("div");
@@ -81,25 +89,29 @@ export default class TodosDisplay {
 
                 todoChecklist.appendChild(todoChecklistItem);
             });
-            todoContainer.appendChild(todoChecklist);
+            todoPriorityContainer.appendChild(todoChecklist);
         }
+
+        // todo actions
+        const todoActionsContainer = document.createElement("div");
+        todoActionsContainer.classList.add("todoActions");
 
         const completeTodoButton = document.createElement("button");
         completeTodoButton.textContent = "Toggle Status";
         completeTodoButton.addEventListener("click", () => this.onTodoCompleteButtonClick(todoContainer.id));
-        todoContainer.appendChild(completeTodoButton);
 
         const editTodoButton = document.createElement("button");
         editTodoButton.textContent = "Edit";
         editTodoButton.addEventListener("click", () => this.onTodoEditButtonClick(todoContainer.id));
 
-        todoContainer.appendChild(editTodoButton);
-
         const deleteTodoButton = document.createElement("button");
         deleteTodoButton.classList.add("removeButton");
         deleteTodoButton.textContent = "Delete";
         deleteTodoButton.addEventListener("click", () => this.onTodoDeleteButtonClick(todoContainer.id));
-        todoContainer.appendChild(deleteTodoButton);
+
+        todoActionsContainer.append(completeTodoButton, editTodoButton, deleteTodoButton);
+        todoPriorityContainer.appendChild(todoActionsContainer);
+        todoContainer.appendChild(todoPriorityContainer);
 
         this.todoDisplayContainer.appendChild(todoContainer);
     }
