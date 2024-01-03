@@ -7,7 +7,7 @@ export default class NewTodo {
         this.newTodoDialog = document.createElement("dialog");
         this.newTodoDialog.id = "new-todo-dialog";
         this.newTodoDialog.addEventListener("click", () => {
-            this.#clearInput();
+            this.resetInput();
             this.newTodoDialog.close()
 
         });
@@ -22,11 +22,6 @@ export default class NewTodo {
         this.formTitle.textContent = "Create A New Todo";
         this.form.appendChild(this.formTitle);
 
-        this.validationMessageContainer = document.createElement("div");
-        this.validationMessageContainer.classList.add("validationContainer");
-        this.validationMessageContainer.id = "newTodo-validation-message-container";
-        this.form.appendChild(this.validationMessageContainer);
-
         //title input
         const titleInputId = "newTodo-title-input";
         this.titleInputContainer = document.createElement("div");
@@ -39,9 +34,11 @@ export default class NewTodo {
         this.titleInput = document.createElement("input");
         this.titleInput.type = "text";
         this.titleInput.id = titleInputId;
+        this.titleInput.minLength = 3;
+        this.titleInput.maxLength = 40;
+        this.titleInput.required = true;
 
-        this.titleInputContainer.append(this.titleInputLabel,
-                                        this.titleInput);
+        this.titleInputContainer.append(this.titleInputLabel, this.titleInput);
         this.form.appendChild(this.titleInputContainer);
 
         //dueDate input
@@ -56,6 +53,12 @@ export default class NewTodo {
         this.dueDateInput = document.createElement("input");
         this.dueDateInput.type = "date";
         this.dueDateInput.id = dueDateId;
+
+        // setting date input to california timezone,
+        // will cause far eastern timezones to show the previous days date though
+        const currentDateLocale = new Date().toLocaleDateString("fr-ca");
+        this.dueDateInput.value = currentDateLocale;
+        this.dueDateInput.min = currentDateLocale;
 
         this.dueDateInputContainer.append(this.dueDateLabel, this.dueDateInput);
         this.form.appendChild(this.dueDateInputContainer);
@@ -95,6 +98,7 @@ export default class NewTodo {
         this.descriptionInput.id = descriptionInputId;
         this.descriptionInput.setAttribute("rows", 5);
         this.descriptionInput.setAttribute("cols", 20);
+        this.descriptionInput.maxLength = 256;
 
         this.descriptionInputContainer.append(this.descriptionInputLabel,
                                               this.descriptionInput);
@@ -166,87 +170,69 @@ export default class NewTodo {
         this.app.appendChild(this.newTodoDialog);
     }
 
-    // returns an object containing the input values or a
-    // or a validation error message with the invalid inputs id
-    #getTodoInputValues() {
-        const inputValues = {};
-        this.validationMessageContainer.textContent = "";
-
-        inputValues.titleInput = this.titleInput.value;
-        if(inputValues.titleInput.trim() === "") {
-            inputValues.isValidInput = false;
-            inputValues.validationErrorMessage = "A title is required";
-            inputValues.invalidInputId = this.titleInput.id;
-            return inputValues;
-        } else if (inputValues.titleInput.trim().length < 3) {
-            inputValues.isValidInput = false;
-            inputValues.validationErrorMessage = "At least 3 characters required for a title";
-            inputValues.invalidInputId = this.titleInput.id;
-            return inputValues;
+    inputsAreValid() {
+        if (this.titleInput.validity.valueMissing) {
+            this.titleInput.setCustomValidity("A title is required!");
+        } else if (this.titleInput.validity.tooShort) {
+            this.titleInput.setCustomValidity("Title needs at least 3 characters!");
+        } else if (this.titleInput.validity.tooLong) {
+            this.titleInput.setCustomValidity("Title cannot exceed 40 characters!")
         } else {
-            this.titleInput.removeAttribute("style");
+            this.titleInput.setCustomValidity("");
         }
 
-        inputValues.descriptionInput = this.descriptionInput.value;
-        if (inputValues.descriptionInput.trim() === "") {
-            inputValues.isValidInput = false;
-            inputValues.validationErrorMessage = "A description is required";
-            inputValues.invalidInputId = this.descriptionInput.id;
-            return inputValues;
-        } else if (inputValues.descriptionInput.trim().length < 3) {
-            inputValues.isValidInput = false;
-            inputValues.validationErrorMessage = "At least 3 characters required for a description";
-            inputValues.invalidInputId = this.descriptionInput.id;
-            return inputValues;
+        if (this.dueDateInput.validity.rangeUnderflow) {
+            this.dueDateInput.setCustomValidity("Date must be at least set to today!");
         } else {
-            this.descriptionInput.removeAttribute("style");
+            this.dueDateInput.setCustomValidity("");
         }
 
-        inputValues.dueDateInput = this.dueDateInput.value;
-        if (inputValues.dueDateInput === "") {
-            inputValues.isValidInput = false;
-            inputValues.validationErrorMessage = "Please select a due date";
-            inputValues.invalidInputId = this.dueDateInput.id;
-            return inputValues;
+        if (this.descriptionInput.validity.tooLong) {
+            this.descriptionInput.setCustomValidity(`Description is too long. Max length allowed is 256 characters but was ${this.descriptionInput.value.length} characters long!`);
         } else {
-            this.dueDateInput.removeAttribute("style");
+            this.descriptionInput.setCustomValidity("");
         }
 
-        // date validation is not fun to write on new years eve
-        // if (new Date(inputValues.dueDateInput) < new Date()) {
-        //     inputValues.isValidInput = false;
-        //     inputValues.validationErrorMessage = "Due Date must be in the future or today's date";
-        //     return inputValues;
-        // }
-        inputValues.checklistInput = [];
-        if (this.showChecklistCheckbox.checked) {
-            const checklistInputListItems = this.checklistItemsUnorderedList.querySelectorAll("li");
-            checklistInputListItems.forEach(item => {
-                const checklistInput = item.querySelector("input");
-                if (checklistInput.value.trim() !== "") {
-                    inputValues.checklistInput.push({content: checklistInput.value, checked: false});
-                }
-            });
-            if (inputValues.checklistInput.length === 0) {
-                delete inputValues.checklistInput;
-            }
-        }
-        inputValues.priorityInput = this.prioritySelect.value;
-
-        inputValues.isValidInput = true;
-        return inputValues;
+        return this.form.reportValidity();
     }
 
-    #clearInput() {
-        this.validationMessageContainer.textContent = "";
+    // returns an object containing the input values or a
+    // or a validation error message with the invalid inputs id
+    getTodoInputValues() {
+        if (this.inputsAreValid()) {
+            const inputValues = {};
+
+            inputValues.titleInput = this.titleInput.value;
+            inputValues.dueDateInput = this.dueDateInput.value;
+            inputValues.priorityInput = this.prioritySelect.value;
+            inputValues.descriptionInput = this.descriptionInput.value;
+
+            inputValues.checklistInput = [];
+            if (this.showChecklistCheckbox.checked) {
+                const checklistInputListItems = this.checklistItemsUnorderedList.querySelectorAll("li");
+                checklistInputListItems.forEach(item => {
+                    const checklistInput = item.querySelector("input");
+                    if (checklistInput.value.trim() !== "") {
+                        inputValues.checklistInput.push({content: checklistInput.value, checked: false});
+                    }
+                });
+                if (inputValues.checklistInput.length === 0) {
+                    delete inputValues.checklistInput;
+                }
+            }
+
+            return inputValues;
+        }
+    }
+
+    resetInput() {
         this.titleInput.value = "";
         this.descriptionInput.value = "";
-        this.dueDateInput.value = "";
+        this.dueDateInput.value = new Date().toLocaleDateString("fr-ca");
         this.showChecklistCheckbox.checked = false;
         this.toggleChecklistItemsInputVisibility(false);
         while (this.checklistItemsUnorderedList.firstChild) {
-            this.checklistItemsUnorderedList
-                .removeChild(this.checklistItemsUnorderedList.firstChild)
+            this.removeChecklistItem(this.checklistItemsUnorderedList.firstChild);
         }
         this.prioritySelect.value = "Low";
     }
@@ -254,23 +240,13 @@ export default class NewTodo {
     bindAddTodo(handler) {
         this.createTodoButton.addEventListener("click", (event) => {
             event.preventDefault();
-            const inputValues = this.#getTodoInputValues();
-            if (inputValues.isValidInput) {
+            const inputValues = this.getTodoInputValues();
+            if (inputValues) {
                 handler(inputValues);
-                // then clear the inputs
-                this.#clearInput();
-                // then close the dialog modal
+                this.resetInput();
                 this.newTodoDialog.close();
-            } else {
-                this.displayValidationError(inputValues);
             }
         });
-    }
-
-    displayValidationError(inputValues) {
-        this.validationMessageContainer.textContent = inputValues.validationErrorMessage;
-        const invalidInput = this.form.querySelector(`#${inputValues.invalidInputId}`);
-        invalidInput.style.border = "2px red solid";
     }
 
     addChecklistItem() {
@@ -279,6 +255,7 @@ export default class NewTodo {
         const checklistItemTextInput = document.createElement("input");
         checklistItemTextInput.type = "text";
         checklistItemTextInput.classList.add("checklistItem");
+        checklistItemTextInput.maxLength = 128;
         checklistItem.appendChild(checklistItemTextInput);
 
         const checklistItemRemoveButton = document.createElement("button");
@@ -304,8 +281,6 @@ export default class NewTodo {
             this.checklistItemsInputContainer.style.visibility = "hidden";
             this.checklistItemsInputContainer.style.maxHeight = "0";
             this.addChecklistItemButton.style.visibility = "hidden";
-            // this.addChecklistItemButton.style.maxHeight = "0";
-
         }
     }
 }

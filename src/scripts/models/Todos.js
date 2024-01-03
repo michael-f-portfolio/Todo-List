@@ -8,7 +8,10 @@ export default class Todos {
         //placeholder todos
         this.todos.push(new Todo("My Title", "A short description.", "2024-01-05", "Low"));
         this.todos.push(new Todo("My Very Very Very Very Descriptive Title",
-                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                                 "sed do eiusmod tempor incididunt ut labore et dolore magna" +
+                                 " aliqua. Ut enim ad minim veniam, quis nostrud exercitation " +
+                                 "ullamco laboris nisi ut aliquip ex ea commodo consequat. exercitation ullamco la.",
                                  "2024-05-29", "Normal"));
         this.todos.push(new Todo("My Single Checklist Title", "A single thing to do.", "2024-01-05", "High",
                                 [{content: "Clean room"}]));
