@@ -1,15 +1,15 @@
 import Header from "../../components/header";
-import NewTodo from "../../components/newTodo";
+import NewTodoForm from "../../components/newTodoForm";
 import Footer from "../../components/footer";
 import Todos from "../../models/Todos";
 import TodosDisplay from "../../components/todosDisplay";
-import EditTodo from "../../components/editTodo";
+import EditTodoForm from "../../components/editTodoForm";
 
 export class TodoController {
     constructor() {
         this.headerView = new Header();
-        this.newTodo = new NewTodo();
-        this.editTodo = new EditTodo();
+        this.newTodo = new NewTodoForm();
+        this.editTodo = new EditTodoForm();
         this.todosDisplay = new TodosDisplay();
         this.footerView = new Footer();
 
@@ -41,7 +41,7 @@ export class TodoController {
     }
 
     handleDisplayEditTodoDialog = (todoId) => {
-        this.editTodo.showEditor(this.todoModel.getTodo(todoId));
+        this.editTodo.showEditForm(this.todoModel.getTodo(todoId));
     }
 
     handleDeleteTodo = (todoId) => {
