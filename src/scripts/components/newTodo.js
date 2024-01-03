@@ -161,12 +161,6 @@ export default class NewTodo {
         this.formActionContainer.appendChild(this.hideNewTodoDialogButton);
         this.form.appendChild(this.formActionContainer);
 
-
-        // testing placeholder values
-        this.titleInput.value = "placeholder-title";
-        this.descriptionInput.value = "placeholder-description";
-        this.dueDateInput.valueAsDate = new Date();
-
         this.newTodoDialogContainer.appendChild(this.form);
         this.newTodoDialog.appendChild(this.newTodoDialogContainer);
         this.app.appendChild(this.newTodoDialog);

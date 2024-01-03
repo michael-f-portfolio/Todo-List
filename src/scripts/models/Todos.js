@@ -4,6 +4,20 @@ import Todo from "./Todo";
 export default class Todos {
     constructor(todos = []) {
         this.todos = todos;
+
+        //placeholder todos
+        this.todos.push(new Todo("My Title", "A short description.", "2024-01-05", "Low"));
+        this.todos.push(new Todo("My Very Very Very Very Descriptive Title",
+                                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                                 "2024-05-29", "Normal"));
+        this.todos.push(new Todo("My Single Checklist Title", "A single thing to do.", "2024-01-05", "High",
+                                [{content: "Clean room"}]));
+        this.todos.push(new Todo("My Checklist Title", "A number of things to do.", "2024-01-05", "Urgent",
+                                [{content:"Wake up"},
+                                 {content: "Eat breakfast"},
+                                 {content: "Make bed"},
+                                 {content: "A rather long thing to do that is very important"},
+                                 {content: "Go to bed"}]));
     }
 
     bindTodoListChange(callback) {
