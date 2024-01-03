@@ -1,23 +1,4 @@
-dialog#new-todo-dialog {
-    min-width: 300px;
-    min-height: 300px;
-    padding: 4px;
-    border: 1px solid var(--slate-800);
-    box-shadow: rgba(60, 64, 67, 0.8) 0px 1px 2px 0px, rgba(60, 64, 67, 0.8) 0px 1px 3px 1px;
-    border-radius: 3px;
-    background-color: var(--slate-300);
-}
-
-dialog::backdrop {
-    background-color: rgba(0, 0, 0, 0.2);
-}
-
-div#new-todo-dialog-container {
-    width: 100%;
-    height: 100%;
-}
-
-#new-todo-dialog-container > form {
+form {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -40,11 +21,6 @@ form > div {
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-}
-
-.validationContainer {
-    align-self: center;
-    color: var(--red-600);
 }
 
 form input[type="text"],
@@ -71,14 +47,6 @@ form input:focus-visible,
 
 .dueDateInput > input {
     width: max-content;
-}
-
-.prioritySelect > select {
-    /* background-color: var(--slate); */
-}
-
-.prioritySelect > select > option[value="Low"] {
-   /* background-color: red; */
 }
 
 .descriptionInput > label {
@@ -115,6 +83,6 @@ form input:focus-visible,
     align-items: center;
 }
 
-.formActions {
-
+.checklistItems input {
+    font-size: 1rem;
 }

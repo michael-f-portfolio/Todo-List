@@ -1,4 +1,4 @@
-import "styles/editTodo.css"
+import "styles/editTodoForm.css"
 import TodoForm from "./todoForm";
 
 export default class EditTodoForm extends TodoForm {

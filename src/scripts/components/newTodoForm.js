@@ -1,4 +1,4 @@
-import "styles/newTodo.css";
+import "styles/newTodoForm.css";
 import TodoForm from "./todoForm";
 
 export default class NewTodoForm extends TodoForm {
