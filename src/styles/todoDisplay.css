@@ -2,11 +2,113 @@
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    width: 80%;
+    gap: 12px;
+    padding-top: 32px;
 }
 
 .todoContainer {
+    height: min-content;
+    background-color: var(--slate-200);
+    border-radius: 8px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+                rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+.todoContainer:hover {
+    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
+                rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.priorityLow, .priorityNormal, .priorityHigh,
+.priorityUrgent, .priorityCritical {
     display: flex;
     flex-direction: column;
-
+    justify-content: space-between;
+    margin: 3px;
+    padding: 16px;
+    gap: 8px;
+    min-width: 250px;
+    width: 25vw;
+    max-width: 300px;
+    border-radius: 4px;
 }
+
+.priorityLow { box-shadow: rgba(37, 99, 235, 0.6) 0px 0px 0px 3px; }
+.priorityNormal { box-shadow: rgba(22, 163, 74, 0.6) 0px 0px 0px 3px; }
+.priorityHigh { box-shadow: rgba(202, 138, 4, 0.6) 0px 0px 0px 3px; }
+.priorityUrgent { box-shadow: rgba(234, 88, 12, 0.6) 0px 0px 0px 3px; }
+.priorityCritical { box-shadow: rgba(220, 38, 38, 0.6) 0px 0px 0px 3px; }
+
+.priorityLow .todoPriority { color: rgba(37, 99, 235, 0.7); }
+.priorityLow .todoTitle { border-bottom: 1px solid rgba(37, 99, 235, 0.4); }
+
+.priorityNormal .todoPriority { color: rgba(22, 163, 74, 0.7); }
+.priorityNormal .todoTitle { border-bottom: 1px solid rgba(22, 163, 74, 0.4); }
+
+.priorityHigh .todoPriority { color: rgba(202, 138, 4, 0.7); }
+.priorityHigh .todoTitle { border-bottom: 1px solid rgba(202, 138, 4, 0.4); }
+
+.priorityUrgent .todoPriority { color: rgba(234, 88, 12, 0.7); }
+.priorityUrgent .todoTitle { border-bottom: 1px solid rgba(234, 88, 12, 0.7); }
+
+.priorityCritical .todoPriority { color: rgba(220, 38, 38, 0.6); }
+.priorityCritical .todoTitle { border-bottom: 1px solid rgba(220, 38, 38, 0.7);}
+
+.todoTitle {
+    text-align: center;
+    font-family: "Roboto-500";
+    font-size: 1.6rem;
+    width: 100%;
+    padding-bottom: 4px;
+    margin-bottom: 16px;
+    color: var(--slate-800);
+    border-bottom: 1px solid var(--slate-500);
+}
+
+.todoInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.todoDueDate {
+    font-family: "Roboto-500";
+    color: var(--slate-700);
+}
+
+.todoDescription {
+    font-family: "Roboto-400";
+    font-size: 1rem;
+    color: var(--slate-700);
+    margin-bottom: 16px;
+}
+
+.todoChecklist {
+    font-family: "Roboto-400";
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin-bottom: 16px;
+}
+
+.todoChecklist > div {
+    display: flex;
+    width: 100%;
+    padding-bottom: 4px;
+}
+
+.todoChecklist input[type="checkbox"] {
+    width: min-content;
+    margin: 0;
+    margin-right: 8px;
+}
+
+.checked label {
+    text-decoration: line-through;
+}
+
+.todoActions {
+    display: flex;
+    justify-content: space-between;
+}
+
