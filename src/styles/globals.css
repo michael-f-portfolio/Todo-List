@@ -74,6 +74,6 @@
     --font-weight-6: 800;
 
     /* Theme */
-    --primary-background: var(--slate-600);
+    --primary-background: var(--slate-500);
     --secondary-background: var(--slate-300);
 }

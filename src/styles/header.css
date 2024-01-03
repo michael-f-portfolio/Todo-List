@@ -4,4 +4,15 @@ header {
     justify-content: space-evenly;
     width: 100%;
     background-color: var(--primary-background);
+    padding: 16px;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+                rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+}
+
+header h1 {
+    font-size: 3rem;
+}
+
+header button {
+    font-size: 1.6rem;
 }
