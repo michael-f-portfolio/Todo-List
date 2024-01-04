@@ -6,6 +6,7 @@
             "components": ["./scripts/components"],
             "functions": ["./scripts/functions"],
             "styles": ["./styles"],
+            "assets": ["./assets"],
         },
     },
 }

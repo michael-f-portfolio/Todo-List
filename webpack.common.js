@@ -11,6 +11,7 @@ module.exports = {
             components: path.resolve(__dirname, "src/scripts/components/"),
             functions: path.resolve(__dirname, "src/scripts/functions/"),
             styles: path.resolve(__dirname, "src/styles"),
+            assets: path.resolve(__dirname, "src/assets"),
         },
     },
     plugins: [
@@ -34,6 +35,10 @@ module.exports = {
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/i,
+                type: "asset/resource",
+            },
+            {
+                test: /\.(png|svg|bmp|jpg|jpeg|gif)$/i,
                 type: "asset/resource",
             },
         ],

@@ -1,9 +1,9 @@
-import Header from "../../components/header";
-import NewTodoForm from "../../components/newTodoForm";
-import Footer from "../../components/footer";
+import Header from "components/header";
+import NewTodoForm from "components/newTodoForm";
+import Footer from "components/footer";
 import Todos from "../../models/Todos";
-import TodosDisplay from "../../components/todosDisplay";
-import EditTodoForm from "../../components/editTodoForm";
+import TodosDisplay from "components/todosDisplay";
+import EditTodoForm from "components/editTodoForm";
 
 export class TodoController {
     constructor() {
