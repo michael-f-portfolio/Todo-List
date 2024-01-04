@@ -96,7 +96,10 @@ export default class TodosDisplay {
         todoActionsContainer.classList.add("todoActions");
 
         const completeTodoButton = document.createElement("button");
-        completeTodoButton.textContent = "Toggle Status";
+        completeTodoButton.textContent = todo.completed
+                                         ? "Uncomplete"
+                                         : "Complete";
+        completeTodoButton.classList.add("toggleComplete")
         completeTodoButton.addEventListener("click", () => this.onTodoCompleteButtonClick(todoContainer.id));
 
         const editTodoButton = document.createElement("button");

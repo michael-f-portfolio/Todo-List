@@ -10,6 +10,7 @@
     height: min-content;
     background-color: var(--slate-200);
     border-radius: 8px;
+    margin: 8px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
                 rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 }
@@ -17,6 +18,13 @@
 .todoContainer:hover {
     box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 4px 0px,
                 rgba(14, 30, 37, 0.32) 0px 2px 16px 0px;
+}
+
+.todoContainer.complete .todoTitle,
+.todoContainer.complete .todoInfo,
+.todoContainer.complete .todoDescription,
+.todoContainer.complete .todoChecklist {
+    filter: contrast(10%) grayscale(10%) brightness(10%) saturate(10%) opacity(20%);
 }
 
 .priorityLow, .priorityNormal, .priorityHigh,
@@ -115,4 +123,12 @@
     display: flex;
     justify-content: space-between;
 }
+.todoActions button.toggleComplete {
+    min-width: 105px;
+}
 
+@media screen and (max-width: 619px) {
+    #todo-display-container {
+        padding-top: 8px;
+    }
+ }
