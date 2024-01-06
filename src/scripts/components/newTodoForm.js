@@ -20,6 +20,12 @@ export default class NewTodoForm extends TodoForm {
         this.newTodoDialogContainer.appendChild(this.form);
         this.newTodoDialog.appendChild(this.newTodoDialogContainer);
         this.app.appendChild(this.newTodoDialog);
+
+        this.closeDialogButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            this.resetInput();
+            this.newTodoDialog.close();
+        });
     }
 
     bindAddTodo(handler) {

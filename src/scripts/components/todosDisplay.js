@@ -52,7 +52,8 @@ export default class TodosDisplay {
         // since input date comes in as UTC but create Date with that value makes it locale
         // "Tue, 02 Jan 2024 00:00:00 GMT" to
         // "Tue, 02 Jan 2024 00:00:00"
-        const dateToFormat = todo.dueDate.toUTCString().substr(0, todo.dueDate.toUTCString().length - 4);
+        const dueDateToDisplay = new Date(todo.dueDate);
+        const dateToFormat = dueDateToDisplay.toUTCString().substring(0, dueDateToDisplay.toUTCString().length - 4);
         const formattedDate = format(dateToFormat, "MMMM do, yyyy");
         todoDueDate.textContent = formattedDate;
         todoInfoContainer.appendChild(todoDueDate);

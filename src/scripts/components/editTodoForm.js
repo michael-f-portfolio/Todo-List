@@ -20,6 +20,12 @@ export default class EditTodoForm extends TodoForm {
         this.editTodoDialogContainer.appendChild(this.form);
         this.editTodoDialog.appendChild(this.editTodoDialogContainer);
         this.app.appendChild(this.editTodoDialog);
+
+        this.closeDialogButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            this.resetInput();
+            this.editTodoDialog.close();
+        });
     }
 
     populateEditForm(id, title, description, dueDate, priority, checklist = [], completed) {
@@ -27,7 +33,13 @@ export default class EditTodoForm extends TodoForm {
         this.form.classList = completed ? "complete" : "incomplete";
         this.titleInput.value = title;
         this.descriptionInput.value = description;
-        this.dueDateInput.valueAsDate = dueDate;
+
+        // const dueDateToDisplay = new Date(dueDate);
+        // const dateToFormat = dueDateToDisplay
+        //                     .toUTCString()
+        //                     .substring(0, dueDateToDisplay.toUTCString().length - 4);
+        this.dueDateInput.valueAsDate = new Date(dueDate);
+
         if (checklist.length > 0) {
             this.showChecklistCheckbox.checked = true;
             let numberOfChecklistItems = 0;
@@ -75,7 +87,7 @@ export default class EditTodoForm extends TodoForm {
             event.preventDefault();
             const inputValues = this.getTodoInputValues();
             handler(inputValues);
-            this.getTodoInputValues();
+            this.resetInput();
             this.editTodoDialog.close();
         });
     }
